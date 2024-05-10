@@ -9,29 +9,57 @@
         const PLAYER_ONE = 1
         const PLAYER_TWO =2
         const squareStyles = [ "empty","player_one", "player_two"]
+        let player_one_is_playing = true;
 
-        let veldModel =  [[0,1,0,0,0,0,0],
+        let veldModel =  [[0,1,1,0,0,0,0],
                         [0,0,1,0,0,0,0],
-                        [0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0],
-                        [0,1,0,0,0,1,0],
-                        [0,0,0,0,2,0,0]]
+                        [0,0,1,0,0,0,0],
+                        [0,0,1,0,0,0,0],
+                        [0,1,1,0,0,1,0],
+                        [0,0,1,0,2,0,0]]
 
 
         function tekenSpeelveld(){
-
-
             document.getElementById("speelveld")
-
             speelveldHtmlUpdate = ""
             for (let y=0; y<veldModel.length;y++){
                 for (let x=0;x<veldModel[0].length;x++){
-                    speelveldHtmlUpdate+=`<div class="box ${squareStyles[veldModel[y][x]]}"></div>`
+                    speelveldHtmlUpdate+=`<div class="box ${squareStyles[veldModel[y][x]]}" `
+                        + `onclick="dropDisk(${x})"></div>`
                 }
                 speelveldHtmlUpdate+="<br>"
             }
 
             document.getElementById("speelveld").innerHTML=speelveldHtmlUpdate
+        }
+
+        function dropDisk(x_clicked){
+            y_to_drop=findUpperEmptySquare(x_clicked)
+            if(y_to_drop===-1){
+                alert("You cant add to this column. Please choose again.")
+                return
+            }
+            updateSpeelveld(y_to_drop,x_clicked)
+            player_one_is_playing = !player_one_is_playing
+            tekenSpeelveld();
+        }
+
+        function updateSpeelveld(y,x){
+            if (player_one_is_playing){
+                veldModel[y][x]=PLAYER_ONE
+            } else{
+                veldModel[y][x]=PLAYER_TWO
+            }
+
+        }
+
+        function findUpperEmptySquare(x){
+            for (let i =veldModel.length-1;i>=0 ;i--){
+                if(veldModel[i][x]===0){
+                    return(i)
+                }
+            }
+            return -1
         }
 
         window.onload = ()=>{
