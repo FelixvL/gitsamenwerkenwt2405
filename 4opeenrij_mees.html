@@ -8,7 +8,7 @@
         const EMPTY = 0
         const PLAYER_ONE = 1
         const PLAYER_TWO =2
-        const squareStyles = [ "empty","player_one", "player_two"]
+        const colors = [ "white","#0000FF", "#ff0000"]
         let player_one_is_playing = true;
 
         let veldModel =  [[0,0,0,0,0,0,0],
@@ -24,7 +24,7 @@
             speelveldHtmlUpdate = ""
             for (let y=0; y<veldModel.length;y++){
                 for (let x=0;x<veldModel[0].length;x++){
-                    speelveldHtmlUpdate+=`<div class="box ${squareStyles[veldModel[y][x]]}" `
+                    speelveldHtmlUpdate+=`<div class="box" style="background-color: ${colors[veldModel[y][x]]}" `
                         + `onclick="dropDisk(${x})"></div>`
                 }
                 speelveldHtmlUpdate+="<br>"
@@ -64,6 +64,7 @@
             return -1
         }
 
+
         function checkForWin(){
             //check horizontal line
             for(y=0;y<veldModel.length;y++){
@@ -72,11 +73,11 @@
                     sequence+=veldModel[y][x]
                 }
                 if (sequence.includes("1111")){
-                    alert("Player one has won")
+                    alert(getName(PLAYER_ONE)+" has won")
                     return
                 }
                 if (sequence.includes("2222")){
-                    alert("Player two has won")
+                    alert(getName(PLAYER_TWO)+" has won")
                     return
                 }
                 
@@ -89,11 +90,11 @@
                     sequence+=veldModel[y][x]
                 }
                 if (sequence.includes("1111")){
-                    alert("Player one has won")
+                    alert(getName(PLAYER_ONE)+" has won")
                     return
                 }
                 if (sequence.includes("2222")){
-                    alert("Player two has won")
+                    alert(getName(PLAYER_TWO)+" has won")
                     return
                 }
             }            
@@ -107,11 +108,11 @@
                     sequence+=veldModel[y][x]
                 }
                 if (sequence.includes("1111")){
-                    alert("Player one has won")
+                    alert(getName(PLAYER_ONE)+" has won")
                     return
                 }
                 if (sequence.includes("2222")){
-                    alert("Player two has won")
+                    alert(getName(PLAYER_TWO)+" has won")
                     return
                 }
             }   
@@ -125,17 +126,32 @@
 
                 }
                 if (sequence.includes("1111")){
-                    alert("Player one has won")
+                    alert(getName(PLAYER_ONE)+" has won")
                     return
                 }
                 if (sequence.includes("2222")){
-                    alert("Player two has won")
+                    alert(getName(PLAYER_TWO)+" has won")
                     return
                 }
             
             }
         }
 
+        function getName(player){
+            if(player==PLAYER_ONE){
+                return document.getElementById("name_player_one").value
+            }else {
+                return document.getElementById("name_player_two").value
+            }
+
+        }
+
+        function colorSelection(){
+            colorOne=document.getElementById("color_player_one").value
+            colorTwo=document.getElementById("color_player_two").value
+            colors[PLAYER_ONE] = colorOne
+            colors[PLAYER_TWO] = colorTwo
+        }
 
         window.onload = ()=>{
             tekenSpeelveld()
@@ -166,8 +182,12 @@
     </style>
 </head>
 <body>
+    Name Player One: <input id="name_player_one">
+    <input type="color" value="#0000FF" onChange="colorSelection()" id="color_player_one">
+    <br>
+    Name Player Two: <input id="name_player_two">
+    <input type="color" value="#ff0000" onchange="colorSelection()", id="color_player_two">
     <div id="speelveld">
-
     </div>
 </body>
 </html>
