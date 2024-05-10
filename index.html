@@ -1,6 +1,7 @@
 <style>
     .vakje{
         display:inline-block;
+        background-color: azure;
         border: 5px solid blue;
         margin: 12px;
         padding: 10px;
@@ -13,23 +14,24 @@
     }
 </style>
 <script>
-    let speelveld = [0, 1, 0, 2, 0];
-    let speler1kleur = 'speler1kleur';
-    let speler2kleur = 'speler2kleur';
+    let speelveld = [0, 0, 0, 0, 0];
     let deklasse = "";
     function tekenveld(){
         let eindString = "";
         for(let x = 0; x < speelveld.length; x++){
-            if(speelveld[x] == 1){
-                deklasse = speler1kleur;
-            }else if(speelveld[x] == 2){
-                deklasse = speler2kleur;
+            if(speelveld[x] != 0){
+                deklasse = "speler"+speelveld[x]+"kleur";
             }else{
                 deklasse = "";
             }
-            eindString += `<div class="vakje ${deklasse}">x</div>`
+            eindString += `<div class="vakje ${deklasse}" onclick="dropsteen(${x})">x</div>`
         }
         document.getElementById("speelveld").innerHTML = eindString;
+    }
+    function dropsteen(steennr){
+        console.log("in dropsteen "+ steennr);
+        speelveld[steennr] = 1;
+        tekenveld();
     }
     window.onload = function(){
         tekenveld();
