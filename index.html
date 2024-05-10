@@ -14,24 +14,33 @@
     }
 </style>
 <script>
-    let speelveld = [0, 0, 0, 0, 0];
+    let speelveld = [
+    [0,0,0,0,0,0], 
+    [0,0,0,0,0,0], 
+    [0,0,0,0,0,0], 
+    [0,0,0,0,0,0], 
+    [0,0,0,0,0,0], 
+    ];
     let deklasse = "";
     let huidigespeler = 1;
     function tekenveld(){
         let eindString = "";
+
         for(let x = 0; x < speelveld.length; x++){
-            if(speelveld[x] != 0){
-                deklasse = "speler"+speelveld[x]+"kleur";
-            }else{
-                deklasse = "";
+            for(let y = 0; y < speelveld[x].length; y++){
+                if(speelveld[x][y] != 0){
+                    deklasse = "speler"+speelveld[x][y]+"kleur";
+                }else{
+                    deklasse = "";
+                }
+                eindString += `<div class="vakje ${deklasse}" onclick="dropsteen('a${x+""+y}')">x</div>`
             }
-            eindString += `<div class="vakje ${deklasse}" onclick="dropsteen(${x})">x</div>`
+            eindString += "<br>"
         }
         document.getElementById("speelveld").innerHTML = eindString;
     }
     function dropsteen(steennr){
-        console.log("in dropsteen "+ steennr);
-        speelveld[steennr] = huidigespeler;
+        speelveld[steennr[1]][steennr[2]] = huidigespeler;
         if(huidigespeler == 1){
             huidigespeler = 2;
         }else{
