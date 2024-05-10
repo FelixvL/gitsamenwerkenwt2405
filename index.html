@@ -1,0 +1,43 @@
+<style>
+    .vakje{
+        display:inline-block;
+        background-color: azure;
+        border: 5px solid blue;
+        margin: 12px;
+        padding: 10px;
+    }
+    .speler1kleur{
+        border: 5px solid yellow;      
+    }
+    .speler2kleur{
+        border: 5px solid red;      
+    }
+</style>
+<script>
+    let speelveld = [0, 0, 0, 0, 0];
+    let deklasse = "";
+    function tekenveld(){
+        let eindString = "";
+        for(let x = 0; x < speelveld.length; x++){
+            if(speelveld[x] != 0){
+                deklasse = "speler"+speelveld[x]+"kleur";
+            }else{
+                deklasse = "";
+            }
+            eindString += `<div class="vakje ${deklasse}" onclick="dropsteen(${x})">x</div>`
+        }
+        document.getElementById("speelveld").innerHTML = eindString;
+    }
+    function dropsteen(steennr){
+        console.log("in dropsteen "+ steennr);
+        speelveld[steennr] = 1;
+        tekenveld();
+    }
+    window.onload = function(){
+        tekenveld();
+    }
+</script>
+
+<div id="speelveld">
+
+</div>
