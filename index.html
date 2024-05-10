@@ -16,6 +16,7 @@
 <script>
     let speelveld = [0, 0, 0, 0, 0];
     let deklasse = "";
+    let huidigespeler = 1;
     function tekenveld(){
         let eindString = "";
         for(let x = 0; x < speelveld.length; x++){
@@ -30,7 +31,12 @@
     }
     function dropsteen(steennr){
         console.log("in dropsteen "+ steennr);
-        speelveld[steennr] = 1;
+        speelveld[steennr] = huidigespeler;
+        if(huidigespeler == 1){
+            huidigespeler = 2;
+        }else{
+            huidigespeler = 1;
+        }
         tekenveld();
     }
     window.onload = function(){
