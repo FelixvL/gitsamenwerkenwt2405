@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const EMPTY = 0
+        const PLAYER_ONE = 1
+        const PLAYER_TWO =2
+        const colors = [ "white","#0000FF", "#ff0000"]
+        let player_one_is_playing = true;
+
+        let veldModel =  [[0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0]]
+
+
+        function tekenSpeelveld(){
+            document.getElementById("speelveld")
+            speelveldHtmlUpdate = ""
+            for (let y=0; y<veldModel.length;y++){
+                for (let x=0;x<veldModel[0].length;x++){
+                    speelveldHtmlUpdate+=`<div class="box" style="background-color: ${colors[veldModel[y][x]]}" `
+                        + `onclick="dropDisk(${x})"></div>`
+                }
+                speelveldHtmlUpdate+="<br>"
+            }
+
+            document.getElementById("speelveld").innerHTML=speelveldHtmlUpdate
+        }
+
+        function dropDisk(x_clicked){
+            y_to_drop=findUpperEmptySquare(x_clicked)
+            if(y_to_drop===-1){
+                alert("You cant add to this column. Please choose again.")
+                return
+            }
+            updateSpeelveld(y_to_drop,x_clicked)
+            player_one_is_playing = !player_one_is_playing
+            tekenSpeelveld();
+            checkForWin()
+        }
+
+        
+        function updateSpeelveld(y,x){
+            if (player_one_is_playing){
+                veldModel[y][x]=PLAYER_ONE
+            } else{
+                veldModel[y][x]=PLAYER_TWO
+            }
+
+        }
+
+        function findUpperEmptySquare(x){
+            for (let i =veldModel.length-1;i>=0 ;i--){
+                if(veldModel[i][x]===0){
+                    return(i)
+                }
+            }
+            return -1
+        }
+
+
+        function checkForWin(){
+            //check horizontal line
+            for(y=0;y<veldModel.length;y++){
+                sequence = ""
+                for(x=0; x<veldModel[0].length; x++){
+                    sequence+=veldModel[y][x]
+                }
+                if (sequence.includes("1111")){
+                    alert(getName(PLAYER_ONE)+" has won")
+                    return
+                }
+                if (sequence.includes("2222")){
+                    alert(getName(PLAYER_TWO)+" has won")
+                    return
+                }
+                
+            }
+
+            //check vertical lines
+            for(x=0;x<veldModel[0].length;x++){
+                sequence = ""
+                for(y=0; y<veldModel.length; y++){
+                    sequence+=veldModel[y][x]
+                }
+                if (sequence.includes("1111")){
+                    alert(getName(PLAYER_ONE)+" has won")
+                    return
+                }
+                if (sequence.includes("2222")){
+                    alert(getName(PLAYER_TWO)+" has won")
+                    return
+                }
+            }            
+
+            //check diagonal line bottomleft -> upper right
+            for (let i=3; i<=8;i++){
+                y=Math.min(i,5)
+                x=Math.max(0,i-y)
+                sequence = ""
+                for(y=y; y>=0 &&x<=6;y--,x++){
+                    sequence+=veldModel[y][x]
+                }
+                if (sequence.includes("1111")){
+                    alert(getName(PLAYER_ONE)+" has won")
+                    return
+                }
+                if (sequence.includes("2222")){
+                    alert(getName(PLAYER_TWO)+" has won")
+                    return
+                }
+            }   
+            //check diagonal upperleft->bottom right
+            for (let i=2; i<=7;i++){
+                y=Math.max(0,4-i)
+                x=Math.max(0,i-4)
+                
+                for(y=y;y<=5 && x<=6;y++,x++){
+                    sequence+=veldModel[y][x]
+
+                }
+                if (sequence.includes("1111")){
+                    alert(getName(PLAYER_ONE)+" has won")
+                    return
+                }
+                if (sequence.includes("2222")){
+                    alert(getName(PLAYER_TWO)+" has won")
+                    return
+                }
+            
+            }
+        }
+
+        function getName(player){
+            if(player==PLAYER_ONE){
+                return document.getElementById("name_player_one").value
+            }else {
+                return document.getElementById("name_player_two").value
+            }
+
+        }
+
+        function colorSelection(){
+            colorOne=document.getElementById("color_player_one").value
+            colorTwo=document.getElementById("color_player_two").value
+            colors[PLAYER_ONE] = colorOne
+            colors[PLAYER_TWO] = colorTwo
+        }
+
+        window.onload = ()=>{
+            tekenSpeelveld()
+        }
+    </script>
+    <style>
+        .box {
+            display: inline-block;
+            border:solid;
+            border-color: red;
+            width:50px;
+            height:50px;
+            margin:4px;
+        }
+        .player_one{
+            background-color: red;
+        }
+        .player_two{
+            background-color: blue;
+        }
+        .empty{
+            background-color: white;
+        }
+
+        #speelveld{
+            width: 2000px;
+        }
+    </style>
+</head>
+<body>
+    Name Player One: <input id="name_player_one">
+    <input type="color" value="#0000FF" onChange="colorSelection()" id="color_player_one">
+    <br>
+    Name Player Two: <input id="name_player_two">
+    <input type="color" value="#ff0000" onchange="colorSelection()", id="color_player_two">
+    <div id="speelveld">
+    </div>
+</body>
+</html>
