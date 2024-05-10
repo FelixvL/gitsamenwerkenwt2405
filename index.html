@@ -1,0 +1,17 @@
+<script>
+    let speelveld = [0, 0, 0, 0, 0];
+    function tekenveld(){
+        let eindString = "";
+        for(let x = 0; x < speelveld.length; x++){
+            eindString += "<div>x</div>"
+        }
+        document.getElementById("speelveld").innerHTML = eindString;
+    }
+    window.onload = function(){
+        tekenveld();
+    }
+</script>
+
+<div id="speelveld">
+
+</div>
