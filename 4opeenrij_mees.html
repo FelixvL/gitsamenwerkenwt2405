@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const EMPTY = 0
+        const PLAYER_ONE = 1
+        const PLAYER_TWO =2
+        const squareStyles = [ "empty","player_one", "player_two"]
+
+        let veldModel =  [[0,1,0,0,0,0,0],
+                        [0,0,1,0,0,0,0],
+                        [0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0],
+                        [0,1,0,0,0,1,0],
+                        [0,0,0,0,2,0,0]]
+
+
+        function tekenSpeelveld(){
+
+
+            document.getElementById("speelveld")
+
+            speelveldHtmlUpdate = ""
+            for (let y=0; y<veldModel.length;y++){
+                for (let x=0;x<veldModel[0].length;x++){
+                    speelveldHtmlUpdate+=`<div class="box ${squareStyles[veldModel[y][x]]}"></div>`
+                }
+                speelveldHtmlUpdate+="<br>"
+            }
+
+            document.getElementById("speelveld").innerHTML=speelveldHtmlUpdate
+        }
+
+        window.onload = ()=>{
+            tekenSpeelveld()
+        }
+    </script>
+    <style>
+        .box {
+            display: inline-block;
+            border:solid;
+            border-color: red;
+            width:50px;
+            height:50px;
+            margin:4px;
+        }
+        .player_one{
+            background-color: red;
+        }
+        .player_two{
+            background-color: blue;
+        }
+        .empty{
+            background-color: white;
+        }
+
+        #speelveld{
+            width: 2000px;
+        }
+    </style>
+</head>
+<body>
+    <div id="speelveld">
+
+    </div>
+</body>
+</html>
