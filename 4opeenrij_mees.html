@@ -10,13 +10,18 @@
         const PLAYER_TWO =2
         const colors = [ "white","#0000FF", "#ff0000"]
         let player_one_is_playing = true;
+        let isAnimating = false;
 
-        let veldModel =  [[0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0],
-                        [0,0,0,0,0,0,0]]
+        let veldModel= JSON.parse(localStorage.getItem("veldModel"))
+        // let veldModel =null
+        if (veldModel===null){
+            veldModel =  [[0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0]]
+        } 
 
 
         function tekenSpeelveld(){
@@ -34,17 +39,41 @@
         }
 
         function dropDisk(x_clicked){
-            y_to_drop=findUpperEmptySquare(x_clicked)
+            if(isAnimating){
+                return
+            }
+            let y_to_drop=findUpperEmptySquare(x_clicked)
             if(y_to_drop===-1){
                 alert("You cant add to this column. Please choose again.")
                 return
             }
-            updateSpeelveld(y_to_drop,x_clicked)
-            player_one_is_playing = !player_one_is_playing
-            tekenSpeelveld();
-            checkForWin()
+            dropAndAnimate(y_to_drop,x_clicked)
         }
+        
+        function dropAndAnimate(y,x){
+            isAnimating=true;
+            for (let i =0; i<y; i++){
+                setTimeout(()=>{
+                    updateSpeelveld(i,x)
+                    tekenSpeelveld();
+                }, 100*i)
+                setTimeout(()=>{
+                    veldModel[i][x] = EMPTY;    
+                    tekenSpeelveld();
+                }, 100*i+100)
+            }
+            setTimeout(()=>{
+                updateSpeelveld(y,x)
+                tekenSpeelveld();
+                isAnimating=false;
+                player_one_is_playing = !player_one_is_playing
+                localStorage.setItem("veldModel",veldModel)
+                localStorage.setItem( "veldModel", JSON.stringify(veldModel) );
+            }, 100*y)
+            setTimeout(()=>checkForWin(),100*y+5)
 
+
+        }
         
         function updateSpeelveld(y,x){
             if (player_one_is_playing){
